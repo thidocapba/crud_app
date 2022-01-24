@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const bodyparser = require("body-parser");
 const path = require('path');
 
-// const connectDB = require('./server/database/connection');
+const connectDB = require('./server/database/connection');
+
 
 const app = express();
 
@@ -15,7 +16,7 @@ const PORT = process.env.PORT || 8080
 app.use(morgan('tiny'));
 
 // mongodb connection
-// connectDB();
+connectDB();
 
 // parse request to body-parser
 app.use(bodyparser.urlencoded({ extended : true}))
@@ -29,18 +30,7 @@ app.use('/css', express.static(path.resolve(__dirname, "assets/css")))
 app.use('/img', express.static(path.resolve(__dirname, "assets/img")))
 app.use('/js', express.static(path.resolve(__dirname, "assets/js")))
 
-app.get('/', (req, res) => {
-    res.render('index');
-})
-
-app.get('/add-user', (req, res) => {
-    res.render('add_user');
-})
-
-app.get('/update-user', (req, res) => {
-    res.render('update_user');
-})
 // load routers
-// app.use('/', require('./server/routes/router'))
+app.use('/', require('./server/routes/router'))
 
 app.listen(PORT, ()=> { console.log(`Server is running on http://localhost:${PORT}`)});
